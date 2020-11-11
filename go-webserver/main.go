@@ -92,7 +92,6 @@ func ShowQuery(w http.ResponseWriter, r *http.Request) {
         if err != nil {
 	    log.Println("status2")
             log.Println(err)
-            //http.Error(w, http.StatusText(500), 500)
             w.Header().Add("Content-Type", "application/json")
             io.WriteString(w, `{"status2":err.Error()}`) 
             return

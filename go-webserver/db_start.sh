@@ -1,4 +1,6 @@
 #!/bin/bash
+docker stop some-postgres
+docker stop go-webserver_web_1
 docker rm some-postgres
 docker run --name some-postgres --network my_network -p 5432:5432 -v $(pwd):/test -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 

@@ -6,7 +6,7 @@ import (
     "net/http"
     "os"
     "database/sql"
-    "fmt"
+    "strconv"
 
     _ "github.com/lib/pq"
 )
@@ -15,7 +15,7 @@ var db *sql.DB
 
 type userInformation struct {
     id int
-    Email string
+    Username string
     Password string
 }
 
@@ -66,18 +66,11 @@ func ShowTest(w http.ResponseWriter, r *http.Request) {
 }
 
 func ShowQuery(w http.ResponseWriter, r *http.Request) {
-/*    ping := db.Ping()
-    if ping != nil {
-        log.Println("ping failed")
-        return
-    }*/
-    //
     rows, err := db.Query("SELECT * FROM public.mytable")
 
     if err != nil {
 
 	log.Println("status1")
-        //http.Error(w, http.StatusText(500), "error with select statement")//http.StatusInternalServerError)
         w.Header().Add("Content-Type", "application/json")
         io.WriteString(w, `{"status1":err.Error()}`)
         return
@@ -88,7 +81,7 @@ func ShowQuery(w http.ResponseWriter, r *http.Request) {
 
     for rows.Next() {
         usr := userInformation{}
-        err := rows.Scan(&usr.id, &usr.Email, &usr.Password)
+        err := rows.Scan(&usr.id, &usr.Username, &usr.Password)
         if err != nil {
 	    log.Println("status2")
             log.Println(err)
@@ -101,17 +94,28 @@ func ShowQuery(w http.ResponseWriter, r *http.Request) {
 
     if err = rows.Err(); err != nil {
 	log.Println("status3")
-        //http.Error(w, http.StatusText(500), 500)
         w.Header().Add("Content-Type", "application/json")
         io.WriteString(w, `{"status3":err.Error()}`)
         return
     }
 
+    result := "{\"users\":"
+    first := true
+
     for _, usr := range usrs {
-        fmt.Fprintf(w, "%d %s %s", usr.id, usr.Email, usr.Password)
+        if !first {
+            result += ","
+        }
+
+        if first {
+            first = false
+        }
+        result += "[{\"id\":\"" + strconv.Itoa(usr.id) + "\",\"username\":\"" + usr.Username + "\",\"password\":\"****\"}]"
     }
+
+    result += "}"
 
     log.Println("ping succeeded")
     w.Header().Add("Content-Type", "application/json")
-    io.WriteString(w, `{"status1":"ping succeeded"}`)
+    io.WriteString(w, result)
 }

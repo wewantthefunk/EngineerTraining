@@ -2,6 +2,7 @@
 docker stop some-postgres
 docker stop go-webserver_web_1
 docker rm some-postgres
+docker rm go-webserver_web_1
 docker run --name some-postgres --network my_network -p 5432:5432 -v $(pwd):/test -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
 echo 10
@@ -26,4 +27,4 @@ echo 1
 sleep 1
 docker exec some-postgres chmod 777 /test/execute.sh
 docker exec some-postgres /test/execute.sh
-docker-compose up --build
+docker-compose up --build --remove-orphans

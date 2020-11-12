@@ -7,6 +7,7 @@ import (
     "os"
     "database/sql"
     "strconv"
+    "strings"
 
     _ "github.com/lib/pq"
 )
@@ -23,6 +24,7 @@ func main() {
     http.HandleFunc("/", ExampleHandler)
     http.HandleFunc("/db", ShowQuery)
     http.HandleFunc("/test", ShowTest)
+    http.HandleFunc("/static/", ServeTheFile)
 
     port := os.Getenv("PORT")
     if port == "" {
@@ -58,6 +60,22 @@ func main() {
 func ExampleHandler(w http.ResponseWriter, r *http.Request) {
     w.Header().Add("Content-Type", "application/json")
     io.WriteString(w, `{"status":"ok"}`)
+}
+
+func ServeTheFile(w http.ResponseWriter, r *http.Request) {
+	file := r.URL.Path[1:]
+	file = strings.Replace(file, "static/", "", 1)
+        log.Println(file)
+	ext := ""
+	switch (file) {
+	    case "index":
+		ext = ".html"
+		break
+	    case "index-js":
+		ext = ".js"
+		break
+	}
+	http.ServeFile(w, r, file + ext)
 }
 
 func ShowTest(w http.ResponseWriter, r *http.Request) {

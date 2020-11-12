@@ -6,6 +6,8 @@ services:
      - "8080:8080"
     networks:
      - my_network
+    volumes:
+     - ./:/static
 networks:
   my_network:
     external: 

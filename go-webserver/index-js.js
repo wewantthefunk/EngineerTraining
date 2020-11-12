@@ -2,7 +2,7 @@ var app = new Vue({
   el: '#app',
   data: {
     message: 'Hello Engineering Training!',
-    result: 'eventual results',
+    result: '',
     responseAvailabe: false
   },
   methods: {

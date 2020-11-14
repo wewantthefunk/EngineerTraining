@@ -7,26 +7,26 @@ var app = new Vue({
   },
   methods: {
    fetchAPIData() {
-    this.responseAvailable = false;
-    fetch("/db", {
-        "method": "GET",
-        "headers": {
-        }
-    })
-    .then(response => { 
-        if(response.ok){
-            return response.json()    
-        } else{
-            alert("Server returned " + response.status + " : " + response.statusText);
-        }
-    })
-    .then(response => {
-        this.result = response.users; 
-        this.responseAvailable = true;
-    })
-    .catch(err => {
-        console.log(err);
-    })
-   }
-  }
+      this.responseAvailable = false;
+      fetch("/db", {
+          "method": "GET",
+          "headers": {
+          }
+      })
+      .then(response => { 
+          if(response.ok){
+              return response.json()    
+          } else{
+              alert("Server returned " + response.status + " : " + response.statusText);
+          }
+      })
+      .then(response => {
+          this.result = response.users; 
+          this.responseAvailable = true;
+      })
+      .catch(err => {
+          console.log(err);
+      })
+   } //fetchAPIData
+  } //methods
 });

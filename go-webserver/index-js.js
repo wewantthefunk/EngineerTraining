@@ -1,7 +1,7 @@
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Welcome Engineering Training!',
+    message: 'Welcome Engineering Training',
     result: '',
     responseAvailabe: false
   },

@@ -3,25 +3,27 @@ var app = new Vue({
   data: {
     message: 'Welcome Engineering Training',
     result: '',
-    responseAvailabe: false
+    responseAvailable: false,
+    apiUrl: "/db",
+    apiObject: {"method":"GET","headers":{}}
   },
   methods: {
+   init(url, obj) {
+      this.apiUrl = url;
+      this.apiObject = obj;
+   },
    fetchAPIData() {
       this.responseAvailable = false;
-      fetch("/db", {
-          "method": "GET",
-          "headers": {
-          }
-      })
-      .then(response => { 
+      fetch(this.apiUrl, this.apiObject)
+      .then(response => {
           if(response.ok){
-              return response.json()    
+              return response.json()
           } else{
               alert("Server returned " + response.status + " : " + response.statusText);
           }
       })
       .then(response => {
-          this.result = response.users; 
+          this.result = response.users;
           this.responseAvailable = true;
       })
       .catch(err => {

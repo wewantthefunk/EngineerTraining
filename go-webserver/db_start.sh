@@ -1,4 +1,5 @@
 #!/bin/bash
+docker network create my_network
 docker stop some-postgres
 docker stop go-webserver_web_1
 docker rm some-postgres
